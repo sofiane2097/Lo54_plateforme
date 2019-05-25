@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22 f?vr. 2016 22:46:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class name="fr.utbm.entities.CourseSession" optimistic-lock="version" schema="lo54_prj" table="COURSE_SESSION">
+    <id name="idSession" type="long">
+      <column name="ID_SESSION"/>
+      <generator class="identity"/>
+    </id>
+    <property name="idLocation" type="long">
+      <column name="ID_LOCATION" not-null="true"/>
+    </property>
+    <property name="codeCourse" type="string">
+      <column length="25" name="CODE_COURSE"/>
+    </property>
+    <property name="sessionStart" type="string">
+        <column length="12" name="SESSIONSTART"/>
+    </property>
+    <property name="sessionEnd" type="string">
+      <column length="12" name="SESSIONEND"/>
+    </property>
+        <property name="sessionMax" type="long">
+      <column name="SESSIONMAX"/>
+    </property>
+    
+    
+    <!--<one-to-many name="mainActor" column="ID_ACTOR" fetch="join"    />   
+        -->
+     </class>
+</hibernate-mapping>

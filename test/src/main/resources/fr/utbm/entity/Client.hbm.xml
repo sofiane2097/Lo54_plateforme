@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22 f?vr. 2016 22:46:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class name="fr.utbm.entities.Client" optimistic-lock="version" schema="lo54_prj" table="CLIENT">
+    <id name="idClient" type="long">
+      <column name="ID_CLIENT"/>
+      <generator class="identity"/>
+    </id>
+    <property name="lastName" type="string">
+      <column length="25" name="LASTNAME" not-null="true"/>
+    </property>
+    <property name="firstName" type="string">
+      <column length="25" name="FIRSTNAME"/>
+    </property>
+    <property name="adress" type="string">
+        <column length="128" name="ADRESS"/>
+    </property>
+    <property name="phone" type="string">
+      <column length="25" name="PHONE"/>
+    </property>
+        <property name="email" type="string">
+      <column length="50" name="EMAIL"/>
+    </property>
+    
+    
+    <!--<one-to-many name="mainActor" column="ID_ACTOR" fetch="join"    />   
+        -->
+     </class>
+</hibernate-mapping>

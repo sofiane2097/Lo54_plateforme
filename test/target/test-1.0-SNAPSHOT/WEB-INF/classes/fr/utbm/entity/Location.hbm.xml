@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22 f?vr. 2016 22:46:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class name="fr.utbm.entities.Location" optimistic-lock="version" schema="lo54_prj" >
+    <id name="idLocation" type="long">
+      <column name="ID_LOCATION"/>
+      <generator class="identity"/>
+    </id>
+    <property name="city" type="string">
+      <column length="20" name="CITY" not-null="true"/>
+    </property>
+    
+    
+    
+    <!--<one-to-many name="mainActor" column="ID_ACTOR" fetch="join"    />   
+        -->
+     </class>
+</hibernate-mapping>
