@@ -6,6 +6,7 @@
 package fr.utbm.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -13,17 +14,32 @@ import javax.persistence.*;
  * @author Sofiane
  */
 @Entity
-@Table(name = "LOCATION", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "ID")
-})
+@Table(name = "LOCATION")
 public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "LOC_ID")    
     private Long id;
     private String city;
 
+    public Location(Long id, String city, Set<CourseSession> sessions) {
+        this.id = id;
+        this.city = city;
+        this.sessions = sessions;
+    }
+
+    public Set<CourseSession> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(Set<CourseSession> sessions) {
+        this.sessions = sessions;
+    }
+    
+    @OneToMany(mappedBy="location")
+    private Set<CourseSession> sessions;
     
     public String getCity() {
         return city;
@@ -68,7 +84,9 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-        return "Location{" + "id=" + id + ", city=" + city + '}';
+        return "Location{" + "id=" + id + ", city=" + city + ", sessions=" + sessions + '}';
     }
+
+    
 
 }

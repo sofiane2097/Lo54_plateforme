@@ -5,6 +5,7 @@
  */
 package fr.utbm.core.util;
 
+import fr.utbm.dao.HibernateUtil;
 import fr.utbm.entities.Location;
 import org.hibernate.Session;
 

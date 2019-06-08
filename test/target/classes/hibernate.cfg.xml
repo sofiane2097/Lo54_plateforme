@@ -16,6 +16,7 @@
     <mapping class="fr.utbm.entities.Client"/>
     <mapping class="fr.utbm.entities.Course"/>
     <mapping class="fr.utbm.entities.Location"/>
+    <mapping class="fr.utbm.entities.CourseSession"/>
 
 
   </session-factory>

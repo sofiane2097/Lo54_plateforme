@@ -30,22 +30,49 @@ public class CourseSession implements Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "PARTICIPE",
-            joinColumns = @JoinColumn(name = "SESSION_ID", referencedColumnName = "SESSION_ID"),
-            inverseJoinColumns = @JoinColumn(name = "CLI_ID", referencedColumnName = "CLI_ID"))
+            joinColumns ={ @JoinColumn(name = "SESSION_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "CLI_ID")}
+    )
     private Set<Client> clients;
 
+    @ManyToOne
+    @JoinColumn(name="CRS_ID", nullable=false)
+    private Course course;
+ 
+    @ManyToOne
+    @JoinColumn(name="LOC_ID", nullable=false)
+    private Location location;
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+    
     public CourseSession() {
     }
 
-    public CourseSession(Long id, String sessionStart, String sessionEnd, Long sessionMax, Set<Client> clients) {
+    public CourseSession(Long id, String sessionStart, String sessionEnd, Long sessionMax, Set<Client> clients, Course course, Location location) {
         this.id = id;
         this.sessionStart = sessionStart;
         this.sessionEnd = sessionEnd;
         this.sessionMax = sessionMax;
-        // error
-       /* this.clients = Stream.of(clients).collect(Collectors.toSet());
-        this.clients.forEach(x -> x.getBooks().add(this));*/
+        this.clients = clients;
+        this.course = course;
+        this.location = location;
     }
+
+   
 
     public Set<Client> getClients() {
         return clients;
@@ -118,7 +145,8 @@ public class CourseSession implements Serializable {
 
     @Override
     public String toString() {
-        return "CourseSession{" + "id=" + id + ", sessionStart=" + sessionStart + ", sessionEnd=" + sessionEnd + ", sessionMax=" + sessionMax + '}';
+        return "CourseSession{" + "id=" + id + ", sessionStart=" + sessionStart + ", sessionEnd=" + sessionEnd + ", sessionMax=" + sessionMax + ", clients=" + clients + ", course=" + course + ", location=" + location + '}';
     }
 
+  
 }

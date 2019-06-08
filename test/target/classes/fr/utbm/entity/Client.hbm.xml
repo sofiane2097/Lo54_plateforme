@@ -13,18 +13,16 @@
     <property name="firstName" type="string">
       <column length="25" name="FIRSTNAME"/>
     </property>
-    <property name="adress" type="string">
-        <column length="128" name="ADRESS"/>
+    <property name="adresse" type="string">
+      <column length="128" name="ADRESS"/>
     </property>
     <property name="phone" type="string">
       <column length="25" name="PHONE"/>
     </property>
-        <property name="email" type="string">
+    <property name="email" type="string">
       <column length="50" name="EMAIL"/>
     </property>
-    
-    
     <!--<one-to-many name="mainActor" column="ID_ACTOR" fetch="join"    />   
         -->
-     </class>
+  </class>
 </hibernate-mapping>

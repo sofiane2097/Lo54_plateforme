@@ -21,14 +21,26 @@ public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "CLI_ID")
     private Long id;
     private String lastName;
     private String firstName;
-    private String adress;
+    private String adresse;
+    private String pwd;
+
+    public Client(Long id, String lastName, String firstName, String adress, String pwd, String phone, String email) {
+        this.id = id;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.adresse = adress;
+        this.pwd = pwd;
+        this.phone = phone;
+        this.email = email;
+    }
     private String phone;
     private String email;
 
-    @ManyToMany(mappedBy = "CLIENT")
+    @ManyToMany(mappedBy = "clients")
     private Set<CourseSession> sessions = new HashSet<>();
 
     public Set<CourseSession> getSessions() {
@@ -38,14 +50,13 @@ public class Client implements Serializable {
     public void setSessions(Set<CourseSession> sessions) {
         this.sessions = sessions;
     }
-    
-    public Client(Long id, String lastName, String firstName, String adress, String phone, String email) {
-        this.id = id;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.adress = adress;
-        this.phone = phone;
-        this.email = email;
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     public Client() {
@@ -67,12 +78,12 @@ public class Client implements Serializable {
         this.firstName = firstName;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAdresse() {
+        return adresse;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
     public String getPhone() {
@@ -121,7 +132,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Clients{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", adress=" + adress + ", phone=" + phone + ", email=" + email + '}';
+        return "Client{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", adress=" + adresse + ", phone=" + phone + ", email=" + email + ", sessions=" + sessions + '}';
     }
 
 }

@@ -6,6 +6,7 @@
 package fr.utbm.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -22,6 +23,23 @@ public class Course implements Serializable {
     private String id;
     private String title;
 
+    @OneToMany(mappedBy="course")
+    private Set<CourseSession> sessions;
+
+    public Course(String id, String title, Set<CourseSession> sessions) {
+        this.id = id;
+        this.title = title;
+        this.sessions = sessions;
+    }
+
+    public Set<CourseSession> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(Set<CourseSession> sessions) {
+        this.sessions = sessions;
+    }
+    
     public Course() {
     }
 
@@ -68,7 +86,7 @@ public class Course implements Serializable {
 
     @Override
     public String toString() {
-        return "Course{" + "id=" + id + ", title=" + title + '}';
+        return "Course{" + "id=" + id + ", title=" + title + ", sessions=" + sessions + '}';
     }
 
 }
