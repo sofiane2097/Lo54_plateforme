@@ -6,9 +6,8 @@
 package fr.utbm.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.persistence.*;
 
 /**
@@ -24,27 +23,57 @@ public class CourseSession implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "SESSION_ID")
     private Long id;
-    private String sessionStart;
-    private String sessionEnd;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date sessionStart;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date sessionEnd;
     private Long sessionMax;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "PARTICIPE",
-            joinColumns ={ @JoinColumn(name = "SESSION_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "CLI_ID")}
+            joinColumns = {
+                @JoinColumn(name = "SESSION_ID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "CLI_ID")}
     )
     private Set<Client> clients;
 
     @ManyToOne
-    @JoinColumn(name="CRS_ID", nullable=false)
+    @JoinColumn(name = "CRS_ID", nullable = false)
     private Course course;
- 
+
     @ManyToOne
-    @JoinColumn(name="LOC_ID", nullable=false)
+    @JoinColumn(name = "LOC_ID", nullable = false)
     private Location location;
 
     public Course getCourse() {
         return course;
+    }
+
+    public Date getSessionStart() {
+        return sessionStart;
+    }
+
+    public void setSessionStart(Date sessionStart) {
+        this.sessionStart = sessionStart;
+    }
+
+    public Date getSessionEnd() {
+        return sessionEnd;
+    }
+
+    public void setSessionEnd(Date sessionEnd) {
+        this.sessionEnd = sessionEnd;
+    }
+
+    public CourseSession(Long id, Date sessionStart, Date sessionEnd, Long sessionMax, Set<Client> clients, Course course, Location location) {
+        this.id = id;
+        this.sessionStart = sessionStart;
+        this.sessionEnd = sessionEnd;
+        this.sessionMax = sessionMax;
+        this.clients = clients;
+        this.course = course;
+        this.location = location;
     }
 
     public void setCourse(Course course) {
@@ -58,21 +87,9 @@ public class CourseSession implements Serializable {
     public void setLocation(Location location) {
         this.location = location;
     }
-    
+
     public CourseSession() {
     }
-
-    public CourseSession(Long id, String sessionStart, String sessionEnd, Long sessionMax, Set<Client> clients, Course course, Location location) {
-        this.id = id;
-        this.sessionStart = sessionStart;
-        this.sessionEnd = sessionEnd;
-        this.sessionMax = sessionMax;
-        this.clients = clients;
-        this.course = course;
-        this.location = location;
-    }
-
-   
 
     public Set<Client> getClients() {
         return clients;
@@ -80,31 +97,6 @@ public class CourseSession implements Serializable {
 
     public void setClients(Set<Client> clients) {
         this.clients = clients;
-    }
-
-    
-    
-    public CourseSession(Long id, String sessionStart, String sessionEnd, Long sessionMax) {
-        this.id = id;
-        this.sessionStart = sessionStart;
-        this.sessionEnd = sessionEnd;
-        this.sessionMax = sessionMax;
-    }
-
-    public String getSessionStart() {
-        return sessionStart;
-    }
-
-    public void setSessionStart(String sessionStart) {
-        this.sessionStart = sessionStart;
-    }
-
-    public String getSessionEnd() {
-        return sessionEnd;
-    }
-
-    public void setSessionEnd(String sessionEnd) {
-        this.sessionEnd = sessionEnd;
     }
 
     public Long getSessionMax() {
@@ -137,10 +129,7 @@ public class CourseSession implements Serializable {
             return false;
         }
         CourseSession other = (CourseSession) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
@@ -148,5 +137,4 @@ public class CourseSession implements Serializable {
         return "CourseSession{" + "id=" + id + ", sessionStart=" + sessionStart + ", sessionEnd=" + sessionEnd + ", sessionMax=" + sessionMax + ", clients=" + clients + ", course=" + course + ", location=" + location + '}';
     }
 
-  
 }

@@ -40,28 +40,24 @@ public class CourseDao {
     }
 
     //// lààààààààààààààààààààààà
-    public void updateClientDao(Course oldCourse, Course newCourse) {
+    ///// debut modif SOFIANE
+    public void updateCourseDao(Course oldCourse, Course newCourse) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            oldCourse.setAdresse(newCourse.getAdresse());
-            oldCourse.setEmail(newCourse.getEmail());
-            oldCourse.setFirstName(newCourse.getFirstName());
-            oldCourse.setLastName(newCourse.getLastName());
-            oldCourse.setPhone(newCourse.getPhone());
-            oldCourse.setPwd(newCourse.getPwd());
+            oldCourse.setId(newCourse.getId());
+            oldCourse.setTitle(newCourse.getTitle());         
             session.merge(oldCourse);
             session.getTransaction().commit();
         } catch (Exception ex) {
-            System.err.println(" Error update client");
+            System.err.println(" Error update Course");
         }
     }
 
-    public void deleteClientDao(Long id) {
+    public void deleteCourseDao(Long id) {
         try{
         session = HibernateUtil.getSessionFactory().openSession();
-
-       Client customer=(Client) session.get(Client.class, id);
+        Course customer=(Course)session.get(Course.class, id);
          if(customer!=null){
                 session.delete(customer);
             System.out.println("client is deleted");

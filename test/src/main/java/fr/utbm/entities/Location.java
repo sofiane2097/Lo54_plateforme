@@ -30,6 +30,9 @@ public class Location implements Serializable {
         this.sessions = sessions;
     }
 
+    public Location() {
+    }
+
     public Set<CourseSession> getSessions() {
         return sessions;
     }

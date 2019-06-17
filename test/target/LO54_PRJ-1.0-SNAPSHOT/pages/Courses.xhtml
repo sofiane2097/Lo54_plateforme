@@ -1,0 +1,203 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    </h:head>
+
+    <h:body>
+        <div id="pageInscription">
+            <div id="header">
+                <ui:insert name="header" >
+                    <ui:include src="../elements/header.xhtml" />
+                </ui:insert>
+            </div>
+
+            <div class="container">
+
+                <style type="text/css">
+                    .ui-datatable .ui-datatable-header {
+                        text-align: right !important;
+                    }
+
+                    .ui-button-text-only .ui-button-text {
+                        padding: 0.3em 0.4em;
+                    }
+
+                    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                        visibility: hidden;
+                    }
+
+                    .ui-filter-column .ui-column-customfilter .custom-filter {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .year-spinner input {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    .calendarFilter .ui-inputfield
+                    {
+                        width:70px;
+                        margin: 0 0.2em; 
+                    }
+
+                </style>
+
+                <div class="" >
+                    <h1>
+                        Courses Inscription
+                    </h1>
+                </div>
+                <h:form>
+                    <p:messages id="messages" showDetail="true" closable="true">
+                    </p:messages>
+                    <p:dataTable var="course" paginator="true" rowsPerPageTemplate="5,10,15"  styleClass="" value="#{CourseSessionMB.listCourseSession}" widgetVar="c" 
+                                 emptyMessage="No courses found with given criteria" filteredValue="#{CourseSessionMB.filtredListCourseSession}">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('c').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+
+                        <p:column sortBy="#{course.course.title}" filterBy="#{course.course.title}" headerText="title" footerText="" filterMatchMode="contains">
+                            <div style="text-align: center;">
+
+                                <h:outputText value="#{course.course.title}"/>
+                            </div>
+                        </p:column>
+
+                        <p:column headerText="ends" sortBy="#{course.sessionStart}" filterBy="#{course.sessionStart}" style="padding: 3px;" filterFunction="#{CourseSessionMB.filterByDateBegins}">
+                            <f:facet name="filter">
+                                <h:inputHidden id="filterStart" />
+                            </f:facet>
+                            <f:facet name="header">
+                                <h:outputText value="begins" />
+                                <br />
+                                <p:calendar id="from" pattern="yyyy.MM.dd">
+                                    <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:component('filterStart')}'))[0].value = $(PrimeFaces.escapeClientId('#{p:component('from')}_input'))[0].value" oncomplete="PF('c').filter()" />
+                                </p:calendar>
+                            </f:facet>
+                            <div style="text-align: center;">
+
+                                <h:outputText value="#{course.sessionStart}">
+                                    <f:convertDateTime type="date" dateStyle="medium" />
+                                </h:outputText>
+                            </div>
+                        </p:column>
+
+                        <p:column headerText="End" sortBy="#{course.sessionEnd}" filterBy="#{course.sessionEnd}" style="padding: 3px;" filterFunction="#{CourseSessionMB.filterByDateEnds}">
+                            <f:facet name="filter">
+                                <h:inputHidden id="filterEnd" />
+                            </f:facet>
+                            <f:facet name="header">
+                                <h:outputText value="End" />
+                                <br />
+                                <p:calendar id="to" pattern="yyyy.MM.dd">
+                                    <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:component('filterEnd')}'))[0].value = $(PrimeFaces.escapeClientId('#{p:component('to')}_input'))[0].value" oncomplete="PF('c').filter()" />
+                                </p:calendar>
+                            </f:facet>                     
+                            <div style="text-align: center;">
+                                <h:outputText value="#{course.sessionEnd}">
+                                    <f:convertDateTime type="date" dateStyle="medium" />
+                                </h:outputText>
+                            </div>
+                        </p:column>
+
+                        <p:column filterBy="#{course.location.city}" sortBy="#{course.location.city}"    headerText=""  filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Location" onchange="PF('c').filter()" scrollHeight="150" styleClass="custom-filter">
+                                    <f:selectItems  value="#{CourseSessionMB.cities }" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <div style="text-align: center;">
+                                <h:outputText value="#{course.location.city}" />
+                            </div>
+
+                            <p:progressBar value="#{(course.clients.size()*100)/course.sessionMax}" labelTemplate="{value}%" />
+                            <div style="padding-top: 5px;text-align: center;">
+                                <span class="badge badge-info">#{course.clients.size()} / #{course.sessionMax}</span>
+                            </div>
+
+                        </p:column>
+                        <p:column>
+                            <div style="text-align: center;">
+
+                            <p:commandButton rendered="#{!course.clients.contains(CourseSessionMB.client)}" value="Subcribe" 
+                                             action="#{CourseSessionMB.setSession(course.id) }"
+                                             oncomplete="PF('dlg_#{course.id}').show();" >
+                            </p:commandButton>
+                            </div>
+                                <p:outputLabel style="color: brown; text-align: center" rendered="#{course.clients.contains(CourseSessionMB.client)}" value="You are already signed in this course" />
+                            <p:dialog header="Information checking" widgetVar="dlg_#{course.id}" modal="true" >
+                                <h:form>
+                                    <div class="ui-fluid">
+                                        <p:fieldset legend="Personnal informations" style="margin-bottom:20px">
+                                            <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">                                    
+                                                <h:outputLabel for="fName" value="First Name" />
+                                                <p:inputText id="fName" value="#{CourseSessionMB.client.firstName}" disabled="true" label="fName" />
+
+                                                <h:outputLabel for="lName" value="Last Name" />
+                                                <p:inputText id="lName" value="#{CourseSessionMB.client.lastName}" disabled="true" label="lName" />
+
+                                                <h:outputLabel for="email" value="Email" />
+                                                <p:inputText id="email" value="#{CourseSessionMB.client.email}" disabled="true" label="email" />
+
+                                                <h:outputLabel for="phone" value="Phone" />
+                                                <p:inputText id="phone" value="#{CourseSessionMB.client.phone}" disabled="true" label="phone" />
+
+
+                                            </p:panelGrid>
+                                            <p:panelGrid columns="2" columnClasses="ui-g-2 ui-md-2,ui-g-10 ui-md-10" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">                                    
+
+                                                <h:outputLabel for="adresse" value="adresse" />
+                                                <p:inputText id="adresse" value="#{CourseSessionMB.client.adresse}" disabled="true" label="adresse" />
+                                            </p:panelGrid>
+
+                                        </p:fieldset>
+                                        <p:fieldset legend="Session informations" style="margin-bottom:20px">
+                                            <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">                                    
+                                                <h:outputLabel for="title" value="Title" />
+                                                <p:inputText id="title" value="#{course.course.title}" disabled="true" label="title" />
+                                                <h:outputLabel for="location" value="Location" />
+                                                <p:inputText id="location" value="#{course.location.city}" disabled="true" label="location" />
+                                                <h:outputLabel for="begins" value="Begins" />
+                                                <p:inputText id="begins" value="#{course.sessionStart}" disabled="true" label="begins" />
+                                                <h:outputLabel for="ends" value="Ends" />
+                                                <p:inputText id="ends" value="#{course.sessionEnd}" disabled="true" label="ends" />
+
+
+                                            </p:panelGrid>
+
+                                        </p:fieldset>
+
+                                    </div>
+
+                                </h:form>
+                                <f:facet  name="footer">
+                                    <p:commandButton value="Subscribe" style="float: right;" action="#{CourseSessionMB.inscription(course.id, CourseSessionMB.client.id)}" update="@form" />
+
+                                </f:facet>
+                            </p:dialog> 
+                        </p:column>
+
+
+                    </p:dataTable>
+
+
+
+                </h:form>
+
+
+            </div>
+        </div>
+    </h:body>
+</html>

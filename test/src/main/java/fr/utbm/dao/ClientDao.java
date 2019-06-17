@@ -9,11 +9,8 @@ import fr.utbm.entities.Client;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-/**
- *
- * @author BADELH
- */
 public class ClientDao {
 
     Session session;
@@ -39,13 +36,26 @@ public class ClientDao {
         client = (Client) query.uniqueResult();
         return client;
     }
+    public Client getClientByIdDao(long id) {
+        Client client = null;
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createQuery("from Client where CLI_ID= :id  ");
+        query.setParameter("id", id);
+        client = (Client) query.uniqueResult();
+        return client;
+    }
 
     public List<Client> getClientsDao() {
-        session = HibernateUtil.getSessionFactory().openSession();
-        List<Client> client = null;
-        Query query = session.createQuery("from Client");
-        client = query.list();
-        return client;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            List<Client> client = null;
+            Query query = session.createQuery("from Client ");
+            client = query.list();
+            return client;
+        } catch (Exception e) {
+            throw e;
+
+        }
 
     }
 
@@ -67,16 +77,18 @@ public class ClientDao {
     }
 
     public void deleteClientDao(Long id) {
-        try{
-        session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
 
-       Client customer=(Client) session.get(Client.class, id);
-         if(customer!=null){
+            Client customer = (Client) session.get(Client.class, id);
+            if (customer != null) {
+                Transaction tx = session.beginTransaction();
                 session.delete(customer);
-            System.out.println("client is deleted");
-         }
+                tx.commit();
+                System.out.println("client is deleted");
+            }
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.err.println("error delete client");
             ex.printStackTrace();
         }

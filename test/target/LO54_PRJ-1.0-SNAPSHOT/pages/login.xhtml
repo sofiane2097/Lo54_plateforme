@@ -1,0 +1,49 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <title>Login</title>
+    </h:head>
+    <h:body>
+        <style type="text/css">
+            /** Demo **/
+            .ui-outputlabel {
+                font-weight: bold;
+            }
+
+            .ui-orderlist .ui-orderlist-list {
+                height: auto;
+            }
+        </style>
+
+            <div class="container">
+                
+        <h3>Login UTBM Courses</h3>
+        <br/><br/>
+        <h:form id="loginForm">
+            <p:panel header="login"  style="">  
+        <div  style="text-align: center">
+
+                <h:messages globalOnly="true" style="color:red;margin:8px;" />  
+                <b style="text-align: center">#{loginMB.message}</b> 
+        </div>
+
+                <p:panelGrid columns="4" columnClasses="ui-g-4 ui-md-8,ui-g-4 ui-md-8,ui-g-4 ui-md-8,ui-g-4 ui-md-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <h:outputLabel value="Email" />
+                    <h:inputText value="#{loginMB.client.email}" /> <br />
+                    <h:outputLabel value="Password" />
+                    <h:inputSecret value="#{loginMB.client.pwd}"></h:inputSecret><br/>
+                    <h:commandButton value="Submit" action="#{loginMB.login}"></h:commandButton>
+                </p:panelGrid>
+            </p:panel>
+
+        </h:form>
+        </div>
+       
+    </h:body>
+</html> 

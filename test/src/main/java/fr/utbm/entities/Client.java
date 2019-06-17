@@ -37,6 +37,7 @@ public class Client implements Serializable {
         this.phone = phone;
         this.email = email;
     }
+    
     private String phone;
     private String email;
 
@@ -132,7 +133,9 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", adress=" + adresse + ", phone=" + phone + ", email=" + email + ", sessions=" + sessions + '}';
+        return "Client{" + "id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", adresse=" + adresse + ", pwd=" + pwd + ", phone=" + phone + ", email=" + email + "}";
     }
+
+    
 
 }
